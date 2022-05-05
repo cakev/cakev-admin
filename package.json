@@ -8,9 +8,10 @@
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {
+		"@cakev/sdk": "0.0.1-beta.2",
+		"@cakev/ui": "0.0.1-beta.4",
+		"@cakev/util": "0.0.1-beta.2",
 		"@chenfengyuan/vue-countdown": "^1.1.5",
-		"@eslinkv/core": "^1.0.55",
-		"@eslinkv/vue2": "^1.0.57",
 		"@jiaminghi/data-view": "^2.10.0",
 		"@riophae/vue-treeselect": "^0.4.0",
 		"@simonwep/pickr": "^1.7.4",
@@ -27,7 +28,8 @@
 		"vue-loader": "^14.2.1",
 		"vue-marquee-text-component": "^1.2.0",
 		"vue-router": "^3.4.3",
-		"vue-seamless-scroll": "^1.1.21"
+		"vue-seamless-scroll": "^1.1.21",
+		"vuex": "^3.6.2"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-decorators": "^7.13.5",

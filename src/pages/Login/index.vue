@@ -20,7 +20,6 @@
 </template>
 <script lang="ts">
 import { Input, Button, Icon, Form, FormItem } from 'view-design'
-import common from '../../store/common.store.js'
 import { login } from '@/api/user.api.js'
 
 export default {
@@ -45,7 +44,7 @@ export default {
 				userName: this.userName,
 				password: this.password,
 			})
-			common.actions.setUser(res)
+			this.$store.commit('common/setUser', res)
 			localStorage.setItem('cakev-login', 'true')
 			this.$router.replace('/')
 		},

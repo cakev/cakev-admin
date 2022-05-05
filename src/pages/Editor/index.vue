@@ -4,7 +4,7 @@
 	d-screen
 </template>
 <script lang="ts">
-import { dScreen, dDetail } from '@eslinkv/vue2'
+import { dScreen, dDetail } from '@cakev/sdk'
 
 export default {
 	name: 'editor',

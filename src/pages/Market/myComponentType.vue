@@ -29,8 +29,8 @@ e-layout.market-container(:padding="false")
 <script lang="ts">
 import { Table, Button } from 'view-design'
 import dialogComponentType from './dialogComponentType.vue'
-import common from '../../store/common.store.js'
 import { levelList, destroy } from '@/api/marketComponentType.api.js'
+import { mapState } from 'vuex'
 
 export default {
 	components: {
@@ -40,7 +40,6 @@ export default {
 	},
 	data() {
 		return {
-			common: common.state,
 			list: [],
 			columns: [
 				{
@@ -64,6 +63,9 @@ export default {
 				componentTypeName: '',
 			},
 		}
+	},
+	computed: {
+		...mapState(['common']),
 	},
 	methods: {
 		handleLoadData(item, callback): void {
@@ -122,7 +124,7 @@ export default {
 		},
 	},
 	mounted(): void {
-		common.actions.setNavIndex('/market/componentList')
+		this.$store.commit('common/setNavIndex', '/market/componentList')
 	},
 }
 </script>

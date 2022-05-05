@@ -6,8 +6,8 @@
 		d-detail(:show="false")
 </template>
 <script lang="ts">
-import { dView, dDetail } from '@eslinkv/vue2'
-import { Editor } from '@eslinkv/core'
+import { dView, dDetail } from '@cakev/sdk'
+import { Editor } from '@cakev/sdk'
 
 export default {
 	name: 'detail',

@@ -17,8 +17,8 @@ i-modal.check-modal(v-model="modalShow", title="新增")
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
 import TreeSelect, { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import common from '../../store/common.store.js'
 import { levelList, update, create } from '@/api/marketComponentType.api.js'
+import { mapState } from 'vuex'
 
 export default {
 	components: {
@@ -43,7 +43,6 @@ export default {
 		return {
 			modalShow: false,
 			componentTypeList: [],
-			common: common.state,
 		}
 	},
 	watch: {
@@ -53,6 +52,9 @@ export default {
 		modalShow: function (val) {
 			this.$emit('input', val)
 		},
+	},
+	computed: {
+		...mapState(['common']),
 	},
 	methods: {
 		loadOptions({ action, parentNode, callback }): void {

@@ -39,7 +39,7 @@ e-card
 <script lang="ts">
 import { Button, Icon, Modal, Input, Tooltip } from 'view-design'
 import EmptyImage from '../../components/empty-image/index.vue'
-import { dShareDialog } from '@eslinkv/vue2'
+import { dShareDialog } from '@cakev/sdk'
 import { destroy } from '@/api/screen.api.js'
 
 export default {

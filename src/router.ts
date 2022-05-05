@@ -1,6 +1,5 @@
 ﻿import Vue from 'vue'
 import VueRouter from 'vue-router'
-import common from './store/common.store.js'
 
 const routes: Array<any> = []
 const context = require.context('./pages', true, /\.(route.ts)$/)
@@ -17,7 +16,7 @@ const router: any = new VueRouter({
 })
 router.beforeEach((to, _from, next) => {
 	if (to.meta.requireAuth) {
-		if (common.state.user || localStorage.getItem('cakev-login')) {
+		if (localStorage.getItem('cakev-login')) {
 			next()
 		} else {
 			next('/login')

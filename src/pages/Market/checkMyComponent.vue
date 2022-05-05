@@ -16,7 +16,7 @@ div
 <script lang="ts">
 import { Table, Button } from 'view-design'
 import dialogCheck from './dialogCheckComponent.vue'
-import { Editor } from '@eslinkv/core'
+import { Editor } from '@cakev/sdk'
 import { destroy, checkList } from '@/api/marketComponent.api.js'
 
 export default {

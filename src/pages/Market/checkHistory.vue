@@ -13,7 +13,7 @@ div
 </template>
 <script lang="ts">
 import { Table, Button } from 'view-design'
-import { Editor } from '@eslinkv/core'
+import { Editor } from '@cakev/sdk'
 import { checkHistoryList } from '@/api/marketComponent.api.js'
 
 export default {

@@ -1,6 +1,5 @@
 import { Message } from 'view-design'
 import axios from 'axios'
-import common from '../store/common.store'
 const request = axios.create()
 export const requestNoBaseURL = axios.create()
 export const baseURL = '/node'
@@ -46,7 +45,6 @@ request.interceptors.response.use(
 				return data.result
 			}
 			if (data.code === 4001) {
-				common.state.user = null
 				localStorage.removeItem('cakev-login')
 				window.top.location.href = `${location.origin}/login`
 				Message.error(data.message || errMessage)

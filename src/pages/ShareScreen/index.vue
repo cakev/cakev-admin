@@ -26,8 +26,8 @@
 	d-detail(:show="false", ref="dDetail")
 </template>
 <script lang="ts">
-import { dView, dDetail } from '@eslinkv/vue2'
-import { Editor } from '@eslinkv/core'
+import { dView, dDetail } from '@cakev/sdk'
+import { Editor } from '@cakev/sdk'
 import { Input, Button } from 'view-design'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import { screenShareLogin, screenShareUse } from '@/api/screenShare.api.js'
