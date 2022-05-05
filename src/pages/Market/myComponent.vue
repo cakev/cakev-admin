@@ -78,7 +78,6 @@ div
 			i-button(type="primary", @click="submitEdit") 确定
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { Table, Button, Input, Option, Select, Modal, FormItem, Form } from 'view-design'
 import { destroy, getVersionList, list, update } from '@/api/marketComponent.api.js'
 import { levelList } from '@/api/marketComponentType.api'
@@ -86,11 +85,12 @@ import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import dUpload from '../../components/d-upload/index.vue'
+import Vue from 'vue'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
 Vue.use(Viewer)
 
-@Component({
+export default {
 	components: {
 		'i-form': Form,
 		'i-form-item': FormItem,
@@ -103,174 +103,178 @@ Vue.use(Viewer)
 		TreeSelect,
 		dUpload,
 	},
-})
-export default class MarketComponentList extends Vue {
-	list = []
-	typeList = []
-	versionList: any = []
-	total = 0
-	orderKey = ''
-	orderType = ''
-	loaded = false
-	dialogEditShow = false
-	dialogEditVersionShow = false
-	currentItem: any = {}
-	query: any = {
-		componentTitle: '',
-		componentTypeId: '',
-	}
-	columns = [
-		{
-			title: '组件名称',
-			key: 'componentTitle',
-			sortable: 'custom',
-		},
-		{
-			title: '缩略图',
-			slot: 'componentAvatar',
-		},
-		{
-			title: '组件版本号',
-			key: 'componentVersion',
-		},
-		{
-			title: '分类名称',
-			key: 'componentTypeName',
-		},
-		{
-			title: '创建时间',
-			key: 'createTime',
-			slot: 'createTime',
-			sortable: 'custom',
-		},
-		{
-			title: '操作',
-			slot: 'action',
-		},
-	]
-	loadOptions({ action, parentNode, callback }): void {
-		if (action === LOAD_CHILDREN_OPTIONS) {
-			levelList({
-				componentTypeParentId: parentNode.componentTypeId,
-			}).then(r => {
-				parentNode.children = r
-				callback()
-			})
-		}
-	}
-
-	normalizer(node) {
+	data() {
 		return {
-			id: node.componentTypeId,
-			label: node.componentTypeName,
-			children: node.children,
-		}
-	}
-
-	get formData() {
-		return {
-			library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
-		}
-	}
-
-	sortChange(obj): void {
-		this.orderKey = obj.key
-		this.orderType = obj.order
-		;(this.$refs.page as any).reload()
-	}
-
-	search(): void {
-		this.init({
-			pageSize: 10,
-			pageNum: 1,
-		})
-	}
-
-	handleVersion(row): void {
-		this.dialogEditVersionShow = true
-		this.currentItem = row
-		getVersionList({
-			componentEnTitle: row.componentEnTitle,
-		}).then(r => {
-			this.versionList = r
-		})
-	}
-
-	handleEdit(row): void {
-		this.dialogEditShow = true
-		this.currentItem = row
-	}
-
-	submitEdit(): void {
-		update({
-			componentId: this.currentItem.componentId,
-			sort: this.currentItem.sort,
-			componentAvatar: this.currentItem.componentAvatar,
-			componentTitle: this.currentItem.componentTitle,
-			componentTypeId: this.currentItem.componentTypeId,
-			componentChart: this.currentItem.componentChart,
-			componentChartType: this.currentItem.componentChartType,
-		}).then(() => {
-			this.dialogEditShow = false
-			this.$Message.success('更新成功')
-			;(this.$refs.page as any).reload()
-		})
-	}
-
-	submitVersion(): void {
-		update({
-			componentEnTitle: this.currentItem.componentEnTitle,
-			componentVersion: this.currentItem.componentVersion,
-		}).then(() => {
-			this.dialogEditVersionShow = false
-			this.$Message.success('更新成功')
-			;(this.$refs.page as any).reload()
-		})
-	}
-
-	async init({ pageNum, pageSize }) {
-		const data = {
-			pageNum,
-			pageSize,
-			status: 'SUCCESS',
-			isCurrentVersion: true,
-			...this.query,
-			orderKey: this.orderKey,
-			orderType: this.orderType,
-		}
-		const result = {}
-		for (const key in data) {
-			if (data[key]) {
-				result[key] = data[key]
-			}
-		}
-		const res = await list(result)
-		this.loaded = true
-		this.list = res.list
-		this.total = res.count
-	}
-
-	handleRemove(row): void {
-		this.$Modal.confirm({
-			title: '提示',
-			content: '确认删除吗？',
-			loading: true,
-			onOk: async () => {
-				await destroy({
-					componentId: row.componentId,
-					componentEnTitle: row.componentEnTitle,
-				})
-				this.$Message.success('删除成功')
-				this.$Modal.remove()
-				;(this.$refs.page as any).reload()
+			list: [],
+			typeList: [],
+			versionList: [],
+			total: 0,
+			orderKey: '',
+			orderType: '',
+			loaded: false,
+			dialogEditShow: false,
+			dialogEditVersionShow: false,
+			currentItem: {},
+			query: {
+				componentTitle: '',
+				componentTypeId: '',
 			},
-		})
-	}
+			columns: [
+				{
+					title: '组件名称',
+					key: 'componentTitle',
+					sortable: 'custom',
+				},
+				{
+					title: '缩略图',
+					slot: 'componentAvatar',
+				},
+				{
+					title: '组件版本号',
+					key: 'componentVersion',
+				},
+				{
+					title: '分类名称',
+					key: 'componentTypeName',
+				},
+				{
+					title: '创建时间',
+					key: 'createTime',
+					slot: 'createTime',
+					sortable: 'custom',
+				},
+				{
+					title: '操作',
+					slot: 'action',
+				},
+			],
+		}
+	},
+	computed: {
+		formData() {
+			return {
+				library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
+			}
+		},
+	},
+	methods: {
+		loadOptions({ action, parentNode, callback }): void {
+			if (action === LOAD_CHILDREN_OPTIONS) {
+				levelList({
+					componentTypeParentId: parentNode.componentTypeId,
+				}).then(r => {
+					parentNode.children = r
+					callback()
+				})
+			}
+		},
 
-	reload(): void {
-		;(this.$refs.page as any).reload()
-	}
+		normalizer(node) {
+			return {
+				id: node.componentTypeId,
+				label: node.componentTypeName,
+				children: node.children,
+			}
+		},
 
+		sortChange(obj): void {
+			this.orderKey = obj.key
+			this.orderType = obj.order
+			;(this.$refs.page as any).reload()
+		},
+
+		search(): void {
+			this.init({
+				pageSize: 10,
+				pageNum: 1,
+			})
+		},
+
+		handleVersion(row): void {
+			this.dialogEditVersionShow = true
+			this.currentItem = row
+			getVersionList({
+				componentEnTitle: row.componentEnTitle,
+			}).then(r => {
+				this.versionList = r
+			})
+		},
+
+		handleEdit(row): void {
+			this.dialogEditShow = true
+			this.currentItem = row
+		},
+
+		submitEdit(): void {
+			update({
+				componentId: this.currentItem.componentId,
+				sort: this.currentItem.sort,
+				componentAvatar: this.currentItem.componentAvatar,
+				componentTitle: this.currentItem.componentTitle,
+				componentTypeId: this.currentItem.componentTypeId,
+				componentChart: this.currentItem.componentChart,
+				componentChartType: this.currentItem.componentChartType,
+			}).then(() => {
+				this.dialogEditShow = false
+				this.$Message.success('更新成功')
+				;(this.$refs.page as any).reload()
+			})
+		},
+
+		submitVersion(): void {
+			update({
+				componentEnTitle: this.currentItem.componentEnTitle,
+				componentVersion: this.currentItem.componentVersion,
+			}).then(() => {
+				this.dialogEditVersionShow = false
+				this.$Message.success('更新成功')
+				;(this.$refs.page as any).reload()
+			})
+		},
+
+		async init({ pageNum, pageSize }) {
+			const data = {
+				pageNum,
+				pageSize,
+				status: 'SUCCESS',
+				isCurrentVersion: true,
+				...this.query,
+				orderKey: this.orderKey,
+				orderType: this.orderType,
+			}
+			const result = {}
+			for (const key in data) {
+				if (data[key]) {
+					result[key] = data[key]
+				}
+			}
+			const res = await list(result)
+			this.loaded = true
+			this.list = res.list
+			this.total = res.count
+		},
+
+		handleRemove(row): void {
+			this.$Modal.confirm({
+				title: '提示',
+				content: '确认删除吗？',
+				loading: true,
+				onOk: async () => {
+					await destroy({
+						componentId: row.componentId,
+						componentEnTitle: row.componentEnTitle,
+					})
+					this.$Message.success('删除成功')
+					this.$Modal.remove()
+					;(this.$refs.page as any).reload()
+				},
+			})
+		},
+
+		reload(): void {
+			;(this.$refs.page as any).reload()
+		},
+	},
 	mounted(): void {
 		levelList().then(r => {
 			r.forEach(v => {
@@ -278,7 +282,7 @@ export default class MarketComponentList extends Vue {
 			})
 			this.typeList = r
 		})
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

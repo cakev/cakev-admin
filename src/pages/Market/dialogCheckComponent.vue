@@ -7,7 +7,6 @@ i-modal.check-modal(v-model="modalShow", title="审核")
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Modal, Button } from 'view-design'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import html2canvas from 'html2canvas'
@@ -16,60 +15,89 @@ import { checkError, checkSuccess } from '@/api/marketComponent.api.js'
 import { file } from '@/api/upload.api.js'
 import { Editor } from '@eslinkv/core'
 
-@Component({
+export default {
 	components: {
 		'i-button': Button,
 		'i-modal': Modal,
 		dView,
 	},
-})
-export default class MarketEditDialog extends Vue {
-	@Prop(Boolean) value!: boolean
-	@Prop(Object) detail: any
-	modalShow = false
-	loading = false
-	editor = Editor.Instance()
-	@Watch('value')
-	onValueChange(val): void {
-		this.modalShow = val
-	}
-
-	@Watch('modalShow')
-	onModalShow(val): void {
-		this.$emit('input', val)
-	}
-
-	cancel(): void {
-		checkError({ componentId: this.detail.componentId }).then(() => {
-			this.modalShow = false
-			this.$emit('reload')
-		})
-	}
-
-	submit(): void {
-		this.loading = true
-		document.getElementsByClassName('widget-part')[0].classList.remove('animate__fadeIn')
-		html2canvas(document.getElementsByClassName('widget-part')[0] as HTMLElement, {
-			allowTaint: true,
-			scale: 1,
-			useCORS: true,
-			backgroundColor: 'transparent',
-		})
-			.then(canvas => {
-				canvas.toBlob(
-					blob => {
-						this.upload(blob)
-					},
-					'image/png',
-					0.9,
-				)
+	props: {
+		value: {
+			type: Boolean,
+		},
+		detail: {
+			type: Object,
+		},
+	},
+	data() {
+		return {
+			modalShow: false,
+			loading: false,
+			editor: Editor.Instance(),
+		}
+	},
+	watch: {
+		value: function (val) {
+			this.modalShow = val
+		},
+		modalShow: function (val) {
+			this.$emit('input', val)
+		},
+	},
+	methods: {
+		cancel(): void {
+			checkError({ componentId: this.detail.componentId }).then(() => {
+				this.modalShow = false
+				this.$emit('reload')
 			})
-			.catch(e => {
-				console.log(e)
-				this.$Message.error('组件截图失败')
+		},
+
+		submit(): void {
+			this.loading = true
+			document.getElementsByClassName('widget-part')[0].classList.remove('animate__fadeIn')
+			html2canvas(document.getElementsByClassName('widget-part')[0] as HTMLElement, {
+				allowTaint: true,
+				scale: 1,
+				useCORS: true,
+				backgroundColor: 'transparent',
+			})
+				.then(canvas => {
+					canvas.toBlob(
+						blob => {
+							this.upload(blob)
+						},
+						'image/png',
+						0.9,
+					)
+				})
+				.catch(e => {
+					console.log(e)
+					this.$Message.error('组件截图失败')
+					checkSuccess({
+						componentId: this.detail.componentId,
+						componentAvatar: '',
+						componentEnTitle: this.detail.componentEnTitle,
+					})
+						.then(() => {
+							this.modalShow = false
+							this.loading = false
+							this.$emit('reload')
+						})
+						.catch(() => {
+							this.loading = false
+						})
+				})
+		},
+
+		upload(blob): void {
+			const name = `${+new Date()}.png`
+			const data = new FormData()
+			data.append('file', blob, name)
+			data.append('library', `componentAvatar/${this.detail.componentEnTitle}/${this.detail.componentVersion}`)
+			file(data).then(res => {
 				checkSuccess({
 					componentId: this.detail.componentId,
-					componentAvatar: '',
+					componentAvatar: res.url,
 					componentEnTitle: this.detail.componentEnTitle,
 				})
 					.then(() => {
@@ -81,29 +109,8 @@ export default class MarketEditDialog extends Vue {
 						this.loading = false
 					})
 			})
-	}
-
-	upload(blob): void {
-		const name = `${+new Date()}.png`
-		const data = new FormData()
-		data.append('file', blob, name)
-		data.append('library', `componentAvatar/${this.detail.componentEnTitle}/${this.detail.componentVersion}`)
-		file(data).then(res => {
-			checkSuccess({
-				componentId: this.detail.componentId,
-				componentAvatar: res.url,
-				componentEnTitle: this.detail.componentEnTitle,
-			})
-				.then(() => {
-					this.modalShow = false
-					this.loading = false
-					this.$emit('reload')
-				})
-				.catch(() => {
-					this.loading = false
-				})
-		})
-	}
+		},
+	},
 }
 </script>
 <style lang="scss" scoped>

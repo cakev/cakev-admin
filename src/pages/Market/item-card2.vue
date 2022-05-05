@@ -68,14 +68,13 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 import { Card, Button, Modal, Form, FormItem, Input, Select, Option, Switch, Tag, Icon, Tooltip } from 'view-design'
 import dUpload from '../../components/d-upload/index.vue'
 import EmptyImage from '../../components/empty-image/index.vue'
-import { Vue, Component, PropSync } from 'vue-property-decorator'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import { levelList } from '@/api/collectionComponentType.api.js'
 import { update, destroy } from '@/api/marketComponent.api.js'
 
-@Component({
+export default {
 	components: {
 		'i-card': Card,
 		'i-tooltip': Tooltip,
@@ -93,93 +92,108 @@ import { update, destroy } from '@/api/marketComponent.api.js'
 		EmptyImage,
 		TreeSelect,
 	},
-})
-export default class ItemCard extends Vue {
-	dialogEditShow = false
-	dialogEditVersionShow = false
-	componentTypeList: any[] = []
-	versionList: any[] = []
-
-	get formData() {
+	props: {
+		item: {
+			type: Object,
+		},
+	},
+	data() {
 		return {
-			library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
+			dialogEditShow: false,
+			dialogEditVersionShow: false,
+			componentTypeList: [],
+			versionList: [],
 		}
-	}
-
-	@PropSync('item', { type: Object }) currentItem!: any
-
-	loadOptions({ action, parentNode, callback }): void {
-		if (action === LOAD_CHILDREN_OPTIONS) {
-			levelList({
-				componentTypeParentId: parentNode.componentTypeId,
-			}).then(r => {
-				parentNode.children = r
-				callback()
-			})
-		}
-	}
-
-	normalizer(node) {
-		return {
-			id: node.componentTypeId,
-			label: node.componentTypeName,
-			children: node.children,
-		}
-	}
-
-	submitVersion(): void {
-		update({
-			componentEnTitle: this.currentItem.componentEnTitle,
-			componentVersion: this.currentItem.componentVersion,
-		}).then(() => {
-			this.dialogEditVersionShow = false
-			this.$Message.success('更新成功')
-			this.$emit('reload')
-		})
-	}
-
-	submitEdit(): void {
-		update({
-			componentId: this.currentItem.componentId,
-			sort: this.currentItem.sort,
-			componentAvatar: this.currentItem.componentAvatar,
-			componentTitle: this.currentItem.componentTitle,
-			componentTypeId: this.currentItem.componentTypeId,
-			componentChart: this.currentItem.componentChart,
-			componentChartType: this.currentItem.componentChartType,
-		}).then(() => {
-			this.dialogEditShow = false
-			this.$Message.success('更新成功')
-			this.$emit('reload')
-		})
-	}
-
-	handleEdit(): void {
-		this.dialogEditShow = true
-		levelList().then(r => {
-			r.forEach(v => {
-				v.children = null
-			})
-			this.componentTypeList = r
-		})
-	}
-
-	handleRemove(): void {
-		this.$Modal.confirm({
-			title: '提示',
-			content: '确认删除吗？',
-			loading: true,
-			onOk: async () => {
-				await destroy({
-					componentId: this.currentItem.componentId,
-					componentEnTitle: this.currentItem.componentEnTitle,
-				})
-				this.$Message.success('删除成功')
-				this.$Modal.remove()
-				this.$emit('reload')
+	},
+	computed: {
+		formData() {
+			return {
+				library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
+			}
+		},
+		currentItem: {
+			get() {
+				return this.item
 			},
-		})
-	}
+			set(val) {
+				this.$emit('update:item', val)
+			},
+		},
+	},
+	methods: {
+		loadOptions({ action, parentNode, callback }): void {
+			if (action === LOAD_CHILDREN_OPTIONS) {
+				levelList({
+					componentTypeParentId: parentNode.componentTypeId,
+				}).then(r => {
+					parentNode.children = r
+					callback()
+				})
+			}
+		},
+
+		normalizer(node) {
+			return {
+				id: node.componentTypeId,
+				label: node.componentTypeName,
+				children: node.children,
+			}
+		},
+
+		submitVersion(): void {
+			update({
+				componentEnTitle: this.currentItem.componentEnTitle,
+				componentVersion: this.currentItem.componentVersion,
+			}).then(() => {
+				this.dialogEditVersionShow = false
+				this.$Message.success('更新成功')
+				this.$emit('reload')
+			})
+		},
+
+		submitEdit(): void {
+			update({
+				componentId: this.currentItem.componentId,
+				sort: this.currentItem.sort,
+				componentAvatar: this.currentItem.componentAvatar,
+				componentTitle: this.currentItem.componentTitle,
+				componentTypeId: this.currentItem.componentTypeId,
+				componentChart: this.currentItem.componentChart,
+				componentChartType: this.currentItem.componentChartType,
+			}).then(() => {
+				this.dialogEditShow = false
+				this.$Message.success('更新成功')
+				this.$emit('reload')
+			})
+		},
+
+		handleEdit(): void {
+			this.dialogEditShow = true
+			levelList().then(r => {
+				r.forEach(v => {
+					v.children = null
+				})
+				this.componentTypeList = r
+			})
+		},
+
+		handleRemove(): void {
+			this.$Modal.confirm({
+				title: '提示',
+				content: '确认删除吗？',
+				loading: true,
+				onOk: async () => {
+					await destroy({
+						componentId: this.currentItem.componentId,
+						componentEnTitle: this.currentItem.componentEnTitle,
+					})
+					this.$Message.success('删除成功')
+					this.$Modal.remove()
+					this.$emit('reload')
+				},
+			})
+		},
+	},
 }
 </script>
 <style lang="scss">

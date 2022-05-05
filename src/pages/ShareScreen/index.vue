@@ -26,7 +26,6 @@
 	d-detail(:show="false", ref="dDetail")
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { dView, dDetail } from '@eslinkv/vue2'
 import { Editor } from '@eslinkv/core'
 import { Input, Button } from 'view-design'
@@ -35,7 +34,7 @@ import { screenShareLogin, screenShareUse } from '@/api/screenShare.api.js'
 
 let shareInfo: any
 
-@Component({
+export default {
 	components: {
 		'i-input': Input,
 		'i-button': Button,
@@ -43,29 +42,31 @@ let shareInfo: any
 		dView,
 		dDetail,
 	},
-})
-export default class detail extends Vue {
-	editor = Editor.Instance()
-	maskShow = true
-	isOvertime = false
-	pwd = ''
-	shareType = ''
-	leftTime: number | string = ''
+	data() {
+		return {
+			editor: Editor.Instance(),
+			maskShow: true,
+			isOvertime: false,
+			pwd: '',
+			shareType: '',
+			leftTime: '',
+		}
+	},
+	methods: {
+		timeEnd() {
+			this.isOvertime = true
+		},
 
-	timeEnd() {
-		this.isOvertime = true
-	}
-
-	async unlock() {
-		if (!this.pwd) return
-		const res = await screenShareLogin({
-			screenId: this.$route.params.shareScreenId,
-			screenSharePassword: this.pwd,
-		})
-		this.maskShow = false
-		this.editor.init(res)
-	}
-
+		async unlock() {
+			if (!this.pwd) return
+			const res = await screenShareLogin({
+				screenId: this.$route.params.shareScreenId,
+				screenSharePassword: this.pwd,
+			})
+			this.maskShow = false
+			this.editor.init(res)
+		},
+	},
 	async mounted() {
 		shareInfo = await screenShareUse({
 			screenId: this.$route.params.shareScreenId,
@@ -80,7 +81,7 @@ export default class detail extends Vue {
 			this.isOvertime = this.leftTime <= 0
 			!this.isOvertime && this.editor.init(shareInfo)
 		}
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

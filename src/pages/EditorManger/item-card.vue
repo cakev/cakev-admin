@@ -39,11 +39,11 @@ e-card
 <script lang="ts">
 import { Button, Icon, Modal, Input, Tooltip } from 'view-design'
 import EmptyImage from '../../components/empty-image/index.vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
 import { dShareDialog } from '@eslinkv/vue2'
 import { destroy } from '@/api/screen.api.js'
 
-@Component({
+export default {
+	name: 'item-card',
 	components: {
 		'i-button': Button,
 		'i-icon': Icon,
@@ -53,53 +53,72 @@ import { destroy } from '@/api/screen.api.js'
 		'i-input': Input,
 		'i-tooltip': Tooltip,
 	},
-})
-export default class ItemCard extends Vue {
-	@Prop(String) screenAvatar: string
-	@Prop(String) screenId: string
-	@Prop(String) screenPublish: string
-	@Prop(String) screenName: string
-	@Prop(String) createTime: string
-	@Prop(String) screenMainScene: string
-	@Prop(String) screenLayoutMode: string
-	@Prop(Object) screenConfig: any
-
-	shareModal = false
-
-	handleShare(): void {
-		this.shareModal = true
-	}
-
-	get statusStr() {
-		return this.screenPublish === 'COMPLETE' ? '已发布' : '未发布'
-	}
-	handleHistory(): void {
-		this.$router.push(`/screenHistory/${this.screenId}`)
-	}
-	handleEdit(): void {
-		this.$router.push(`/editor/manger/${this.screenId}`)
-	}
-
-	handleLink(): void {
-		const scene = this.screenMainScene ? `&scene=${this.screenMainScene}` : ''
-		const layoutMode = this.screenLayoutMode ? `?layoutMode=${this.screenLayoutMode}` : ''
-		window.open(`${location.origin}/detail/${this.screenId}${layoutMode}${scene}`)
-	}
-
-	handleRemove(): void {
-		this.$Modal.confirm({
-			title: '提示',
-			content: '确认删除吗？',
-			loading: true,
-			onOk: () => {
-				destroy({ screenId: this.screenId }).then(() => {
-					this.$Message.success('删除成功')
-					this.$Modal.remove()
-					this.$emit('reload')
-				})
-			},
-		})
-	}
+	props: {
+		screenAvatar: {
+			type: String,
+		},
+		screenId: {
+			type: String,
+		},
+		screenPublish: {
+			type: String,
+		},
+		screenName: {
+			type: String,
+		},
+		createTime: {
+			type: String,
+		},
+		screenMainScene: {
+			type: String,
+		},
+		screenLayoutMode: {
+			type: String,
+		},
+		screenConfig: {
+			type: Object,
+		},
+	},
+	data() {
+		return {
+			shareModal: false,
+		}
+	},
+	computed: {
+		statusStr() {
+			return this.screenPublish === 'COMPLETE' ? '已发布' : '未发布'
+		},
+	},
+	methods: {
+		handleShare(): void {
+			this.shareModal = true
+		},
+		handleHistory(): void {
+			this.$router.push(`/screenHistory/${this.screenId}`)
+		},
+		handleEdit(): void {
+			this.$router.push(`/editor/manger/${this.screenId}`)
+		},
+		handleLink(): void {
+			const scene = this.screenMainScene ? `&scene=${this.screenMainScene}` : ''
+			const layoutMode = this.screenLayoutMode ? `?layoutMode=${this.screenLayoutMode}` : ''
+			window.open(`${location.origin}/detail/${this.screenId}${layoutMode}${scene}`)
+		},
+		handleRemove(): void {
+			this.$Modal.confirm({
+				title: '提示',
+				content: '确认删除吗？',
+				loading: true,
+				onOk: () => {
+					destroy({ screenId: this.screenId }).then(() => {
+						this.$Message.success('删除成功')
+						this.$Modal.remove()
+						this.$emit('reload')
+					})
+				},
+			})
+		},
+	},
 }
 </script>
 <style lang="scss" scoped>

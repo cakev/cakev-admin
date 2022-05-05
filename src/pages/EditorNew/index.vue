@@ -4,13 +4,12 @@
 	d-screen
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { dScreen, dDetail } from '@eslinkv/vue2'
 
-@Component({
+export default {
+	name: 'editor',
 	components: { dScreen, dDetail },
-})
-export default class editor extends Vue {}
+}
 </script>
 <style lang="scss">
 .home-container {

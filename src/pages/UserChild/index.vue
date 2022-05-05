@@ -14,44 +14,46 @@ e-layout.user-child-container(:padding="false")
 		:loaded="loaded")
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { Table, Button } from 'view-design'
 import { childList } from '@/api/user.api.js'
 
-@Component({
+export default {
 	components: {
 		'i-table': Table,
 		'i-button': Button,
 	},
-})
-export default class SecretKey extends Vue {
-	tableData = []
-	total = 0
-	loaded = false
-	columns = [
-		{
-			title: '创建时间',
-			key: 'userName',
+	data() {
+		return {
+			tableData: [],
+			total: 0,
+			loaded: false,
+			columns: [
+				{
+					title: '创建时间',
+					key: 'userName',
+				},
+				{
+					title: '账号昵称',
+					key: 'userNickName',
+				},
+				{
+					title: '账号密码',
+					slot: 'password',
+				},
+			],
+		}
+	},
+	methods: {
+		async init() {
+			let res = await childList()
+			res = res.map(v => {
+				v.isSecretKeyShow = false
+				return v
+			})
+			this.loaded = true
+			this.tableData = res
 		},
-		{
-			title: '账号昵称',
-			key: 'userNickName',
-		},
-		{
-			title: '账号密码',
-			slot: 'password',
-		},
-	]
-
-	async init() {
-		let res = await childList()
-		res = res.map(v => {
-			v.isSecretKeyShow = false
-			return v
-		})
-		this.loaded = true
-		this.tableData = res
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

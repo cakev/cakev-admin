@@ -14,14 +14,13 @@ i-modal.check-modal(v-model="modalShow", title="新增")
 		i-button(type="error", @click="modalShow = false") 取消
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
 import TreeSelect, { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import common from '../../store/common.store.js'
 import { levelList, update, create } from '@/api/marketComponentType.api.js'
 
-@Component({
+export default {
 	components: {
 		'i-button': Button,
 		'i-modal': Modal,
@@ -32,52 +31,59 @@ import { levelList, update, create } from '@/api/marketComponentType.api.js'
 		'i-option': Option,
 		TreeSelect,
 	},
-})
-export default class DialogComponentType extends Vue {
-	@Prop(Boolean) value: boolean
-	@Prop(Object) detail
-	modalShow = false
-	componentTypeList = []
-	common = common.state
-	@Watch('value')
-	onValueChange(val): void {
-		this.modalShow = val
-	}
-
-	@Watch('modalShow')
-	onModalShow(val): void {
-		this.$emit('input', val)
-	}
-
-	loadOptions({ action, parentNode, callback }): void {
-		if (action === LOAD_CHILDREN_OPTIONS) {
-			levelList({
-				componentTypeParentId: parentNode.componentTypeId,
-			}).then(r => {
-				parentNode.children = r
-				callback()
-			})
-		}
-	}
-
-	normalizer(node) {
+	props: {
+		value: {
+			type: Boolean,
+		},
+		detail: {
+			type: Object,
+		},
+	},
+	data() {
 		return {
-			id: node.componentTypeId,
-			label: node.componentTypeName,
-			children: node.children,
+			modalShow: false,
+			componentTypeList: [],
+			common: common.state,
 		}
-	}
+	},
+	watch: {
+		value: function (val) {
+			this.modalShow = val
+		},
+		modalShow: function (val) {
+			this.$emit('input', val)
+		},
+	},
+	methods: {
+		loadOptions({ action, parentNode, callback }): void {
+			if (action === LOAD_CHILDREN_OPTIONS) {
+				levelList({
+					componentTypeParentId: parentNode.componentTypeId,
+				}).then(r => {
+					parentNode.children = r
+					callback()
+				})
+			}
+		},
 
-	async submit() {
-		if (this.detail.componentTypeId) {
-			await update({ ...this.detail })
-		} else {
-			await create({ ...this.detail })
-		}
-		this.modalShow = false
-		this.$emit('reload')
-	}
+		normalizer(node) {
+			return {
+				id: node.componentTypeId,
+				label: node.componentTypeName,
+				children: node.children,
+			}
+		},
 
+		async submit() {
+			if (this.detail.componentTypeId) {
+				await update({ ...this.detail })
+			} else {
+				await create({ ...this.detail })
+			}
+			this.modalShow = false
+			this.$emit('reload')
+		},
+	},
 	created(): void {
 		levelList().then(r => {
 			r.forEach(v => {
@@ -85,7 +91,7 @@ export default class DialogComponentType extends Vue {
 			})
 			this.componentTypeList = r
 		})
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

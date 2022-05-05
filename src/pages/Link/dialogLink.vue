@@ -17,12 +17,12 @@ i-modal.check-modal(v-model="modalShow", :title="detail.linkId ? '更新' : '新
 		i-button(type="error", @click="modalShow = false") 取消
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
 import { createLink, updateLink } from '@/api/link.api.js'
 import { list } from '@/api/screen.api.js'
 
-@Component({
+export default {
+	name: 'dialog-component-type',
 	components: {
 		'i-button': Button,
 		'i-modal': Modal,
@@ -32,37 +32,43 @@ import { list } from '@/api/screen.api.js'
 		'i-select': Select,
 		'i-option': Option,
 	},
-})
-export default class DialogComponentType extends Vue {
-	@Prop(Boolean) value: boolean
-	@Prop(Object) detail
-	modalShow = false
-	screens: any = []
-
-	@Watch('value')
-	onValueChange(val) {
-		this.modalShow = val
-	}
-
-	@Watch('modalShow')
-	onModalShow(val): void {
-		this.$emit('input', val)
-	}
-
-	async submit() {
-		if (this.detail.linkId) {
-			await updateLink({ ...this.detail })
-		} else {
-			await createLink({ ...this.detail })
+	props: {
+		value: {
+			type: Boolean,
+		},
+		detail: {
+			type: Object,
+		},
+	},
+	data() {
+		return {
+			modalShow: false,
+			screens: [],
 		}
-		this.modalShow = false
-		this.$emit('init')
-	}
-
+	},
+	watch: {
+		value: function (val) {
+			this.modalShow = val
+		},
+		modalShow: function (val) {
+			this.$emit('input', val)
+		},
+	},
+	methods: {
+		async submit() {
+			if (this.detail.linkId) {
+				await updateLink({ ...this.detail })
+			} else {
+				await createLink({ ...this.detail })
+			}
+			this.modalShow = false
+			this.$emit('init')
+		},
+	},
 	async created() {
 		const res = await list()
 		this.screens = res.list
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

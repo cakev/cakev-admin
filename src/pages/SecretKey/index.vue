@@ -22,69 +22,68 @@ e-layout(:padding="false")
 			i-button(type="info", @click="handleUse(row)", v-else) 启用
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { Table, Button } from 'view-design'
 import { createSecretKey, getAllSecretKey, stopSecretKey, useSecretKey } from '@/api/secretKey.api.js'
 
-@Component({
+export default {
 	components: {
 		'i-table': Table,
 		'i-button': Button,
 	},
-})
-export default class SecretKey extends Vue {
-	tableData = []
-	columns = [
-		{
-			width: 200,
-			title: '创建时间',
-			slot: 'createTime',
+	data() {
+		return {
+			tableData: [],
+			columns: [
+				{
+					width: 200,
+					title: '创建时间',
+					slot: 'createTime',
+				},
+				{
+					minWidth: 300,
+					title: 'appKey/appSecret',
+					slot: 'appKey',
+				},
+				{
+					title: '状态',
+					slot: 'isUsed',
+				},
+				{
+					title: '操作',
+					slot: 'action',
+				},
+			],
+		}
+	},
+	methods: {
+		async getList() {
+			let res = await getAllSecretKey()
+			res = res.map(v => {
+				v.isSecretKeyShow = false
+				return v
+			})
+			this.tableData = res
 		},
-		{
-			minWidth: 300,
-			title: 'appKey/appSecret',
-			slot: 'appKey',
+		async handleUse(row) {
+			if (row.isUsed) {
+				await stopSecretKey({
+					appKey: row.appKey,
+					appSecret: row.appSecret,
+				})
+			} else {
+				await useSecretKey({
+					appKey: row.appKey,
+					appSecret: row.appSecret,
+				})
+			}
+			this.$Message.success('操作成功')
+			this.getList()
 		},
-		{
-			title: '状态',
-			slot: 'isUsed',
-		},
-		{
-			title: '操作',
-			slot: 'action',
-		},
-	]
-
-	async getList() {
-		let res = await getAllSecretKey()
-		res = res.map(v => {
-			v.isSecretKeyShow = false
-			return v
-		})
-		this.tableData = res
-	}
-
+	},
 	async create() {
 		await createSecretKey()
 		await this.getList()
-	}
-
-	async handleUse(row) {
-		if (row.isUsed) {
-			await stopSecretKey({
-				appKey: row.appKey,
-				appSecret: row.appSecret,
-			})
-		} else {
-			await useSecretKey({
-				appKey: row.appKey,
-				appSecret: row.appSecret,
-			})
-		}
-		this.$Message.success('操作成功')
-		this.getList()
-	}
-
+	},
 	async mounted() {
 		await this.getList()
 		if (this.tableData.length === 0) {
@@ -92,7 +91,7 @@ export default class SecretKey extends Vue {
 				content: '让我们创建第一个密钥吧',
 			})
 		}
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

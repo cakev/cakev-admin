@@ -8,11 +8,10 @@ i-modal.check-modal(v-model="modalShow", title="新增")
 		i-button(type="error", @click="modalShow = false") 取消
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
 import { update, create } from '@/api/collectionComponentType.api.js'
 
-@Component({
+export default {
 	components: {
 		'i-button': Button,
 		'i-modal': Modal,
@@ -22,30 +21,38 @@ import { update, create } from '@/api/collectionComponentType.api.js'
 		'i-select': Select,
 		'i-option': Option,
 	},
-})
-export default class DialogComponentType extends Vue {
-	@Prop(Boolean) value: boolean
-	@Prop(Object) detail
-	modalShow = false
-	@Watch('value')
-	onValueChange(val): void {
-		this.modalShow = val
-	}
-
-	@Watch('modalShow')
-	onModalShow(val): void {
-		this.$emit('input', val)
-	}
-
-	async submit() {
-		if (this.detail.componentTypeId) {
-			await update({ ...this.detail })
-		} else {
-			await create({ ...this.detail })
+	props: {
+		value: {
+			type: Boolean,
+		},
+		detail: {
+			type: Object,
+		},
+	},
+	data() {
+		return {
+			modalShow: false,
 		}
-		this.modalShow = false
-		this.$emit('reload')
-	}
+	},
+	watch: {
+		value: function (val) {
+			this.modalShow = val
+		},
+		modalShow: function (val) {
+			this.$emit('input', val)
+		},
+	},
+	methods: {
+		async submit() {
+			if (this.detail.componentTypeId) {
+				await update({ ...this.detail })
+			} else {
+				await create({ ...this.detail })
+			}
+			this.modalShow = false
+			this.$emit('reload')
+		},
+	},
 }
 </script>
 <style lang="scss" scoped>

@@ -1,13 +1,14 @@
 const pkg = require('./package.json')
+const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
-
 const proxyUrl = 'http://127.0.0.1:7001'
 
+const resolve = dir => {
+	return path.join(__dirname, dir)
+}
+
 module.exports = {
-	assetsDir: 'static',
 	publicPath: '/',
-	outputDir: 'dist',
-	indexPath: './index.html',
 	productionSourceMap: false,
 	lintOnSave: false,
 	devServer: {
@@ -55,6 +56,7 @@ module.exports = {
 		]
 	},
 	chainWebpack: config => {
+		config.resolve.alias.set('@', resolve('src'))
 		config.plugin('define').tap(args => {
 			args[0]['process.env'].version = JSON.stringify(pkg.version)
 			return args

@@ -14,13 +14,12 @@ e-layout.market-container(:padding="false")
 				@reload="reload")
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import { Table, Button, Input, Option, Select } from 'view-design'
 import itemCard from './item-card2.vue'
 import { list } from '@/api/collectionComponent.api.js'
 import { levelList } from '@/api/collectionComponentType.api'
 
-@Component({
+export default {
 	components: {
 		'i-table': Table,
 		'i-button': Button,
@@ -29,53 +28,55 @@ import { levelList } from '@/api/collectionComponentType.api'
 		'i-option': Option,
 		itemCard,
 	},
-})
-export default class CollectionComponentList extends Vue {
-	list = []
-	typeList = []
-	total = 0
-	loaded = false
-	query: any = {
-		componentTitle: '',
-		componentTypeId: '',
-	}
-
-	search(): void {
-		this.init({
-			pageSize: 20,
-			pageNum: 1,
-		})
-	}
-
-	async init({ pageNum, pageSize }) {
-		const data = {
-			pageNum,
-			pageSize,
-			status: 'SUCCESS',
-			isCurrentVersion: true,
-			...this.query,
+	data() {
+		return {
+			list: [],
+			typeList: [],
+			total: 0,
+			loaded: false,
+			query: {
+				componentTitle: '',
+				componentTypeId: '',
+			},
 		}
-		const result = {}
-		for (const key in data) {
-			if (data[key]) {
-				result[key] = data[key]
+	},
+	methods: {
+		search(): void {
+			this.init({
+				pageSize: 20,
+				pageNum: 1,
+			})
+		},
+
+		async init({ pageNum, pageSize }) {
+			const data = {
+				pageNum,
+				pageSize,
+				status: 'SUCCESS',
+				isCurrentVersion: true,
+				...this.query,
 			}
-		}
-		const res = await list(result)
-		this.loaded = true
-		this.list = res.list
-		this.total = res.count
-	}
+			const result = {}
+			for (const key in data) {
+				if (data[key]) {
+					result[key] = data[key]
+				}
+			}
+			const res = await list(result)
+			this.loaded = true
+			this.list = res.list
+			this.total = res.count
+		},
 
-	reload(): void {
-		;(this.$refs.page as any).reload()
-	}
-
+		reload(): void {
+			;(this.$refs.page as any).reload()
+		},
+	},
 	mounted() {
 		levelList().then(res => {
 			this.typeList = res
 		})
-	}
+	},
 }
 </script>
 <style lang="scss" scoped>

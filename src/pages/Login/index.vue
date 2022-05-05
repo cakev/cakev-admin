@@ -4,7 +4,7 @@
 		.login-card-logo.pos-r.fn-flex
 			.login-card-logo-img.pos-a
 			.login-card-logo-mask.pos-a
-			h2.pos-r EslinkV
+			h2.pos-r CakeV
 		Form.login-card-content(@keydown.native.enter.prevent="login")
 			FormItem
 				i-input(prefix="md-contact", placeholder="用户名", v-model="userName")
@@ -20,11 +20,11 @@
 </template>
 <script lang="ts">
 import { Input, Button, Icon, Form, FormItem } from 'view-design'
-import { Component, Vue } from 'vue-property-decorator'
 import common from '../../store/common.store.js'
 import { login } from '@/api/user.api.js'
 
-@Component({
+export default {
+	name: 'login',
 	components: {
 		'i-input': Input,
 		'i-button': Button,
@@ -32,21 +32,24 @@ import { login } from '@/api/user.api.js'
 		Form,
 		FormItem,
 	},
-})
-export default class Login extends Vue {
-	userName = ''
-	password = ''
-
-	async login() {
-		if (!this.userName || !this.password) return
-		const res = await login({
-			userName: this.userName,
-			password: this.password,
-		})
-		common.actions.setUser(res)
-		localStorage.setItem('cakev-login', 'true')
-		this.$router.replace('/')
-	}
+	data() {
+		return {
+			userName: '',
+			password: '',
+		}
+	},
+	methods: {
+		async login() {
+			if (!this.userName || !this.password) return
+			const res = await login({
+				userName: this.userName,
+				password: this.password,
+			})
+			common.actions.setUser(res)
+			localStorage.setItem('cakev-login', 'true')
+			this.$router.replace('/')
+		},
+	},
 }
 </script>
 <style lang="scss" scoped>
