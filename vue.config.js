@@ -47,13 +47,6 @@ module.exports = {
 	},
 	configureWebpack: config => {
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
-		config.externals = [
-			{
-				vue: 'Vue',
-				'vue-router': 'VueRouter',
-				echarts: 'echarts',
-			},
-		]
 	},
 	chainWebpack: config => {
 		config.resolve.alias.set('@', resolve('src'))

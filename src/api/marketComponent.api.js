@@ -116,3 +116,21 @@ export function use(data) {
 		headers,
 	})
 }
+
+export function useList(data) {
+	return request({
+		url: '/market/component/useList',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+
+export function versionUpdateList(data) {
+	return request({
+		url: 'market/component/versionUpdateList',
+		method: 'post',
+		data,
+		headers,
+	})
+}

@@ -1,4 +1,4 @@
-import request, { headers, requestNoBaseURL } from './request'
+import request, { headers } from './request'
 
 export function list(data) {
 	return request({
@@ -27,6 +27,15 @@ export function create(data) {
 	})
 }
 
+export function publish(data) {
+	return request({
+		url: '/screen/publish',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+
 export function detail(data) {
 	return request({
 		url: '/screen/detail',
@@ -45,8 +54,17 @@ export function update(data) {
 	})
 }
 
+export function linkList(data) {
+	return request({
+		url: '/screen/linkList',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+
 export function detailFile(url) {
-	return requestNoBaseURL({
+	return request({
 		url,
 		method: 'get',
 		headers,
