@@ -21,23 +21,14 @@ module.exports = {
 			'^/node': {
 				target: proxyUrl,
 				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/node': '/',
-				// },
 			},
 			'^/cdn': {
 				target: proxyUrl,
 				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/cdn': '/',
-				// },
 			},
 			'^/server': {
 				target: proxyUrl,
 				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/server': '/',
-				// },
 			},
 		},
 	},

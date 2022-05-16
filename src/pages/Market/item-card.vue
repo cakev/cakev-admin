@@ -11,7 +11,7 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 			i-tag(color="blue", v-if="currentItem.componentTypeName") {{ currentItem.componentTypeName }}
 			span(v-else, :style="{ height: '22px', margin: '2px 4px 2px 0' }")
 		.fn-flex.flex-row.list-item-card-time-box
-			p {{ $format(new Date(currentItem.createTime), 'yyyy-MM-dd hh:mm:ss') }}
+			p {{ currentItem.createTime }}
 			span(:style="{ marginLeft: 'auto' }") V{{ currentItem.componentVersion }}
 	.pos-a.list-item-card-mask.fn-flex.flex-row
 		i-tooltip(content="编辑组件", placement="top")
@@ -59,7 +59,7 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 					label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
 			i-form-item(label="缩略图")
 				.img-wrap
-					d-upload(v-model="currentItem.componentAvatar", :data="formData")
+					c-upload-img(v-model="currentItem.componentAvatar")
 		div(slot="footer")
 			i-button(type="primary", @click="submitEdit") 确定
 	i-modal(v-model="dialogEditVersionShow", title="切换版本")
@@ -73,7 +73,6 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 </template>
 <script lang="ts">
 import { Card, Button, Modal, Form, FormItem, Input, Select, Option, Switch, Tag, Icon, Tooltip } from 'view-design'
-import dUpload from '../../components/d-upload/index.vue'
 import EmptyImage from '../../components/empty-image/index.vue'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -95,7 +94,6 @@ export default {
 		'i-select': Select,
 		'i-option': Option,
 		'i-switch': Switch,
-		dUpload,
 		EmptyImage,
 		TreeSelect,
 	},
@@ -113,11 +111,6 @@ export default {
 		}
 	},
 	computed: {
-		formData() {
-			return {
-				library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
-			}
-		},
 		currentItem: {
 			get() {
 				return this.item

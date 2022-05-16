@@ -3,21 +3,19 @@
 	.preview-wrapper.fit-mode(
 		:style="{ backgroundColor: editor.backgroundColor }")
 		d-view
-		d-detail(:show="false")
 </template>
 <script lang="ts">
-import { dView, dDetail } from '@cakev/sdk'
+import { dView } from '@cakev/sdk'
 import { Editor } from '@cakev/sdk'
 
 export default {
 	name: 'detail',
 	components: {
 		dView,
-		dDetail,
 	},
 	data() {
 		return {
-			editor: Editor.Instance(),
+			editor: Editor.Instance() as Editor,
 		}
 	},
 }
@@ -45,27 +43,6 @@ export default {
 		position: relative;
 		flex-grow: 0;
 		flex-shrink: 0;
-	}
-
-	&.fit-mode {
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-	}
-
-	&.mobile {
-		align-items: unset;
-		overflow: auto;
-
-		#screen {
-			transform-origin: 0 0;
-		}
-	}
-
-	.mobile-wrap {
-		position: relative;
-		width: 100%;
-		overflow: hidden;
 	}
 }
 </style>

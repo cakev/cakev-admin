@@ -4,15 +4,6 @@ e-card
 		:image="screenAvatar",
 		@click="handleEdit")
 		.list-item-card-mask.fn-flex.flex-row.pos-a
-			i-tooltip(
-				content="历史",
-				:style="{ marginLeft: 'auto', marginRight: '10px' }")
-				i-icon.pointer(
-					type="md-time",
-					color="#fff",
-					:size="16",
-					@click="handleHistory",
-					@click.stop)
 			i-tooltip(content="分享", :style="{ marginRight: '10px' }")
 				i-icon.pointer(
 					type="md-paper-plane",
@@ -30,7 +21,7 @@ e-card
 	template(slot="content")
 		h2.list-item-card-title.ellipsis {{ screenName }}
 		.list-item-card-btn.fn-flex.flex-row
-			span.list-item-card-btn-time {{ $format(new Date(createTime), 'yyyy-MM-dd hh:mm:ss') }}
+			span.list-item-card-btn-time {{ createTime }}
 			.list-item-card-btn-link.pointer(@click="handleLink")
 				i-icon(type="md-laptop", :style="{ marginLeft: 'auto' }")
 				span 预览
@@ -92,9 +83,6 @@ export default {
 	methods: {
 		handleShare(): void {
 			this.shareModal = true
-		},
-		handleHistory(): void {
-			this.$router.push(`/screenHistory/${this.screenId}`)
 		},
 		handleEdit(): void {
 			this.$router.push(`/editor/manger/${this.screenId}`)

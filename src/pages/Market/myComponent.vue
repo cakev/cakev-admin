@@ -33,8 +33,6 @@ div
 		template(#componentAvatar="{ row }")
 			.component-avatar(v-viewer)
 				img(:src="row.componentAvatar")
-		template(#createTime="{ row }")
-			span {{ row.createTime ? $format(new Date(row.createTime), 'yyyy-MM-dd HH:mm:ss') : '' }}
 		template(#action="{ row }")
 			a.mr10(@click="handleEdit(row)") 编辑
 			a.mr10(@click="handleVersion(row)") 切换版本
@@ -73,7 +71,7 @@ div
 					label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
 			i-form-item(label="缩略图")
 				.img-wrap
-					d-upload(v-model="currentItem.componentAvatar", :data="formData")
+					c-upload-img(v-model="currentItem.componentAvatar")
 		div(slot="footer")
 			i-button(type="primary", @click="submitEdit") 确定
 </template>
@@ -84,7 +82,6 @@ import { levelList } from '@/api/marketComponentType.api'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import dUpload from '../../components/d-upload/index.vue'
 import Vue from 'vue'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
@@ -101,7 +98,6 @@ export default {
 		'i-select': Select,
 		'i-option': Option,
 		TreeSelect,
-		dUpload,
 	},
 	data() {
 		return {
@@ -149,13 +145,6 @@ export default {
 				},
 			],
 		}
-	},
-	computed: {
-		formData() {
-			return {
-				library: `componentStatic/${this.currentItem.componentType}/${this.currentItem.componentVersion}`,
-			}
-		},
 	},
 	methods: {
 		loadOptions({ action, parentNode, callback }): void {

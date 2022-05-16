@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { Message, Modal } from 'view-design'
-import { format } from 'date-fns'
 import './scss/index.scss'
 import eLayout from './components/e-layout/index.vue'
 import eCard from './components/e-card/index.vue'
@@ -20,7 +19,6 @@ Vue.component('e-card', eCard)
 Vue.component('e-header', eHeader)
 Vue.component('e-page', ePage)
 
-Vue.prototype.$format = format
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 Vue.config.productionTip = false

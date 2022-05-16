@@ -1,10 +1,9 @@
-import request, { headers } from './request'
+import request from './request'
 
 export function list(data) {
 	return request({
 		url: '/screen/list',
 		method: 'post',
-		headers,
 		data,
 	})
 }
@@ -13,7 +12,6 @@ export function destroy(data) {
 	return request({
 		url: '/screen/destroy',
 		method: 'post',
-		headers,
 		data,
 	})
 }
@@ -23,7 +21,6 @@ export function create(data) {
 		url: '/screen/create',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -32,7 +29,6 @@ export function publish(data) {
 		url: '/screen/publish',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -41,7 +37,6 @@ export function detail(data) {
 		url: '/screen/detail',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -49,8 +44,7 @@ export function update(data) {
 	return request({
 		url: '/screen/update',
 		method: 'post',
-		data: data,
-		headers,
+		data,
 	})
 }
 
@@ -59,15 +53,5 @@ export function linkList(data) {
 		url: '/screen/linkList',
 		method: 'post',
 		data,
-		headers,
-	})
-}
-
-export function detailFile(url) {
-	return request({
-		url,
-		method: 'get',
-		headers,
-		dataType: 'json',
 	})
 }

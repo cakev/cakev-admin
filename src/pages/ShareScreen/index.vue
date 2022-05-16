@@ -23,10 +23,9 @@
 		v-if="!maskShow",
 		:style="{ backgroundColor: editor.backgroundColor }")
 		d-view
-	d-detail(:show="false", ref="dDetail")
 </template>
 <script lang="ts">
-import { dView, dDetail } from '@cakev/sdk'
+import { dView } from '@cakev/sdk'
 import { Editor } from '@cakev/sdk'
 import { Input, Button } from 'view-design'
 import VueCountdown from '@chenfengyuan/vue-countdown'
@@ -40,11 +39,10 @@ export default {
 		'i-button': Button,
 		VueCountdown,
 		dView,
-		dDetail,
 	},
 	data() {
 		return {
-			editor: Editor.Instance(),
+			editor: Editor.Instance() as Editor,
 			maskShow: true,
 			isOvertime: false,
 			pwd: '',

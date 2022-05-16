@@ -3,8 +3,6 @@ e-layout(:padding="false")
 	.create
 		i-button(type="primary", @click="create") 创建密钥
 	i-table(:columns="columns", :data="tableData")
-		template(#createTime="{row}")
-			span {{ $format(new Date(row.createTime), 'yyyy-MM-dd HH:mm:ss') }}
 		template(#appKey="{row}")
 			.secret
 				.secret-row

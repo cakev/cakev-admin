@@ -1,8 +1,6 @@
 <template lang="pug">
 e-layout.user-child-container(:padding="false")
 	i-table(:columns="columns", :data="tableData", v-if="total > 0")
-		template(#createTime="{row}")
-			span {{ $format(new Date(row.createTime), 'yyyy-MM-dd HH:mm:ss') }}
 		template(#password="{row}")
 			.content {{ row.isSecretKeyShow ? row.password : row.password.replace(/./g, '*') }}
 				.show.pointer(@click="row.isSecretKeyShow = !row.isSecretKeyShow") {{ row.isSecretKeyShow ? '隐藏' : '显示' }}

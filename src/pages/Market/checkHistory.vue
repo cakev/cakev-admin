@@ -7,8 +7,6 @@ div
 		@on-selection-change="selectHandle")
 		template(#status="{ row }")
 			span(:class="row.status") {{ status[row.status] }}
-		template(#updateTime="{ row }")
-			span {{ $format(new Date(row.updateTime), 'yyyy-MM-dd HH:mm:ss') }}
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
 </template>
 <script lang="ts">

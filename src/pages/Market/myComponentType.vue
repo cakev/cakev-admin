@@ -10,8 +10,6 @@ e-layout.market-container(:padding="false")
 		:load-data="handleLoadData")
 		template(#componentTypeParentName="{ row }")
 			span {{ row.componentTypeParentName ? row.componentTypeParentName : '无' }}
-		template(#createTime="{ row }")
-			span {{ row.createTime ? $format(new Date(row.createTime), 'yyyy-MM-dd HH:mm:ss') : '' }}
 		template(#action="{ row }")
 			i-button.mr10(type="primary", @click="edit(row)") 编辑
 			i-button(type="error", @click="remove(row)") 删除

@@ -35,14 +35,6 @@ export default {
 					component: () => import('./myComponentType.vue'),
 				},
 				{
-					title: '我的收藏',
-					component: () => import('./collectionComponent.vue'),
-				},
-				{
-					title: '收藏分类',
-					component: () => import('./collectionComponentType.vue'),
-				},
-				{
 					title: '回收站',
 					component: () => import('./recycleComponent.vue'),
 				},

@@ -1,11 +1,10 @@
-import request, { headers } from './request'
+import request from './request'
 
 // 创建密钥
 export function createSecretKey() {
 	return request({
 		url: '/secretKey/create',
 		method: 'post',
-		headers,
 	})
 }
 
@@ -14,7 +13,6 @@ export function getAllSecretKey() {
 	return request({
 		url: '/secretKey/all',
 		method: 'post',
-		headers,
 	})
 }
 
@@ -23,7 +21,6 @@ export function stopSecretKey(data) {
 	return request({
 		url: '/secretKey/disabled',
 		method: 'post',
-		headers,
 		data,
 	})
 }
@@ -33,7 +30,6 @@ export function useSecretKey(data) {
 	return request({
 		url: '/secretKey/abled',
 		method: 'post',
-		headers,
 		data,
 	})
 }

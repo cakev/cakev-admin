@@ -1,11 +1,10 @@
-import request, { headers } from './request'
+import request from './request'
 
 // 登陆
 export function login(data) {
 	return request({
 		url: '/user/login',
 		method: 'post',
-		headers,
 		data,
 	})
 }
@@ -15,7 +14,6 @@ export function logout() {
 	return request({
 		url: '/user/logout',
 		method: 'post',
-		headers,
 	})
 }
 
@@ -24,7 +22,6 @@ export function detail() {
 	return request({
 		url: '/user/detail',
 		method: 'post',
-		headers,
 	})
 }
 
@@ -33,6 +30,5 @@ export function childList() {
 	return request({
 		url: '/user/child/all',
 		method: 'post',
-		headers,
 	})
 }

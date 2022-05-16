@@ -5,8 +5,6 @@ div
 		:data="list",
 		v-if="total > 0",
 		@on-selection-change="selectHandle")
-		template(#deleteTime="{ row }")
-			span {{ $format(new Date(row.deleteTime), 'yyyy-MM-dd HH:mm:ss') }}
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
 </template>
 <script lang="ts">

@@ -1,4 +1,4 @@
-import request, { headers } from './request'
+import request from './request'
 import { Editor } from '@cakev/sdk'
 const editor = Editor.Instance()
 
@@ -7,7 +7,6 @@ export function create(data) {
 		url: '/market/componentType/create',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -16,7 +15,6 @@ export function update(data) {
 		url: '/market/componentType/update',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -25,7 +23,6 @@ export function destroy(data) {
 		url: '/market/componentType/destroy',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -34,7 +31,6 @@ export function levelList(data) {
 		url: '/market/componentType/levelList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -43,7 +39,6 @@ export function level(data) {
 		url: '/market/componentType/level',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 

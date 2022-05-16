@@ -1,11 +1,10 @@
-import request, { headers } from './request'
+import request from './request'
 
 export function create(data) {
 	return request({
 		url: '/market/component/create',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -14,7 +13,6 @@ export function update(data) {
 		url: '/market/component/update',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -23,7 +21,6 @@ export function destroy(data) {
 		url: '/market/component/destroy',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -32,7 +29,6 @@ export function list(data) {
 		url: '/market/component/list',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -41,7 +37,6 @@ export function checkList(data) {
 		url: '/market/component/checkList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -50,7 +45,6 @@ export function recycleList(data) {
 		url: '/market/component/recycleList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -59,7 +53,6 @@ export function checkHistoryList(data) {
 		url: '/market/component/checkHistoryList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -68,7 +61,6 @@ export function typeList(data) {
 		url: '/market/component/typeList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -77,7 +69,6 @@ export function detail(data) {
 		url: '/market/component/detail',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -86,7 +77,6 @@ export function checkSuccess(data) {
 		url: '/market/component/checkSuccess',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -95,7 +85,6 @@ export function checkError(data) {
 		url: '/market/component/checkError',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -104,7 +93,6 @@ export function getVersionList(data) {
 		url: '/market/component/version',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -113,7 +101,6 @@ export function use(data) {
 		url: '/market/component/use',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -122,7 +109,6 @@ export function useList(data) {
 		url: '/market/component/useList',
 		method: 'post',
 		data,
-		headers,
 	})
 }
 
@@ -131,6 +117,5 @@ export function versionUpdateList(data) {
 		url: 'market/component/versionUpdateList',
 		method: 'post',
 		data,
-		headers,
 	})
 }

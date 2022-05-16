@@ -8,8 +8,6 @@ div
 		:data="list",
 		v-if="total > 0",
 		@on-selection-change="selectHandle")
-		template(#createTime="{ row }")
-			span {{ $format(new Date(row.createTime), 'yyyy-MM-dd HH:mm:ss') }}
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
 	dialogCheck(v-model="dialogCheckShow", :detail="currentRow", @reload="reload")
 </template>
