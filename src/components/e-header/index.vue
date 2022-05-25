@@ -49,10 +49,10 @@ export default {
 					url: '/screen',
 					title: '大屏管理',
 				},
-				{
-					url: '/market',
-					title: '组件开发',
-				},
+				// {
+				// 	url: '/market',
+				// 	title: '组件开发',
+				// },
 				// {
 				// 	url: '/help',
 				// 	title: '帮助中心',
