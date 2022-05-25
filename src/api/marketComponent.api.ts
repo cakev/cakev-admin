@@ -40,22 +40,6 @@ export function checkList(data) {
 	})
 }
 
-export function recycleList(data) {
-	return request({
-		url: '/market/component/recycleList',
-		method: 'post',
-		data,
-	})
-}
-
-export function checkHistoryList(data) {
-	return request({
-		url: '/market/component/checkHistoryList',
-		method: 'post',
-		data,
-	})
-}
-
 export function typeList(data) {
 	return request({
 		url: '/market/component/typeList',

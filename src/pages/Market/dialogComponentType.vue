@@ -4,20 +4,18 @@ i-modal.check-modal(v-model="modalShow", title="新增")
 		i-form-item(label="分类名")
 			i-input(v-model="detail.componentTypeName")
 		i-form-item(label="父类", v-if="common.user && common.user.userAdmin")
-			tree-select(
-				v-model="detail.componentTypeParentId",
-				:options="componentTypeList",
-				:normalizer="normalizer",
-				:load-options="loadOptions")
+			//tree-select(
+			//	v-model="detail.componentTypeParentId",
+			//	:options="componentTypeList",
+			//	:normalizer="normalizer",
+			//	:load-options="loadOptions")
 	div(slot="footer")
 		i-button(type="primary", @click="submit") 提交
 		i-button(type="error", @click="modalShow = false") 取消
 </template>
 <script lang="ts">
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
-import TreeSelect, { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { levelList, update, create } from '@/api/marketComponentType.api.js'
+import { levelList, update, create } from '@/api/marketComponentType.api'
 import { mapState } from 'vuex'
 
 export default {
@@ -29,7 +27,6 @@ export default {
 		'i-input': Input,
 		'i-select': Select,
 		'i-option': Option,
-		TreeSelect,
 	},
 	props: {
 		value: {
@@ -57,16 +54,16 @@ export default {
 		...mapState(['common']),
 	},
 	methods: {
-		loadOptions({ action, parentNode, callback }): void {
-			if (action === LOAD_CHILDREN_OPTIONS) {
-				levelList({
-					componentTypeParentId: parentNode.componentTypeId,
-				}).then(r => {
-					parentNode.children = r
-					callback()
-				})
-			}
-		},
+		// loadOptions({ action, parentNode, callback }): void {
+		// 	if (action === LOAD_CHILDREN_OPTIONS) {
+		// 		levelList({
+		// 			componentTypeParentId: parentNode.componentTypeId,
+		// 		}).then(r => {
+		// 			parentNode.children = r
+		// 			callback()
+		// 		})
+		// 	}
+		// },
 
 		normalizer(node) {
 			return {

@@ -8,7 +8,7 @@ i-modal.check-modal(v-model="modalShow", :title="detail.linkId ? '更新' : '新
 		i-form-item(label="外链类型")
 			i-select(v-model="detail.linkType")
 				i-option(value="javascript") javascript
-				i-option(value="iconfont") iconfont
+				i-option(value="css") css
 		i-form-item(label="关联大屏")
 			i-select(v-model="detail.linkScreenId")
 				i-option(:value="k.screenId", v-for="(k, i) in screens", :key="i") {{ k.screenName }}
@@ -18,8 +18,8 @@ i-modal.check-modal(v-model="modalShow", :title="detail.linkId ? '更新' : '新
 </template>
 <script lang="ts">
 import { Modal, Button, Form, FormItem, Input, Select, Option } from 'view-design'
-import { createLink, updateLink } from '@/api/link.api.js'
-import { list } from '@/api/screen.api.js'
+import { createLink, updateLink } from '@/api/link.api'
+import { all } from '@/api/screen.api'
 
 export default {
 	name: 'dialog-component-type',
@@ -66,7 +66,7 @@ export default {
 		},
 	},
 	async created() {
-		const res = await list()
+		const res = await all()
 		this.screens = res.list
 	},
 }

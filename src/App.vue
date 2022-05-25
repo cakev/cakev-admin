@@ -1,18 +1,3 @@
-<template>
-	<div id="app">
-		<router-view />
-	</div>
+<template lang="pug">
+router-view
 </template>
-<style lang="scss">
-.vjs-poster {
-	transform: translateZ(0);
-}
-
-.vjs-big-play-button {
-	backface-visibility: hidden;
-}
-
-.vjs-icon-placeholder::before {
-	backface-visibility: hidden;
-}
-</style>

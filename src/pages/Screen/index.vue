@@ -7,30 +7,20 @@ e-layout(:padding="false")
 			style="width: 200px",
 			size="small",
 			:search="true",
-			@on-search="search",
+			@on-search="init",
 			clearable)
 		i-button(type="primary", @click="handleNew", style="margin-left: auto") 新建
-	e-page(
-		@init="init",
-		:total="total",
-		ref="page",
-		:loaded="loaded",
-		:pageSize="999",
-		:show="false")
+	e-page(@init="init", :total="total", ref="page", :loaded="loaded", :pageSize="999", :show="false")
 		ul.list-item-card-box
-			item-card(
-				v-for="item in list",
-				v-bind="item",
-				:key="item.screenId",
-				@reload="reload")
+			item-card(v-for="item in list", v-bind="item", :key="item.screenId", @reload="reload")
 </template>
 <script lang="ts">
 import itemCard from './item-card.vue'
 import { Page, Button, Input, DatePicker, Select, Option } from 'view-design'
-import { list } from '@/api/screen.api.js'
+import { all, create } from '@/api/screen.api'
 
 export default {
-	name: 'edit-manger',
+	name: 'screen',
 	components: {
 		itemCard,
 		'i-page': Page,
@@ -51,26 +41,23 @@ export default {
 		}
 	},
 	methods: {
-		handleNew(): void {
-			this.$router.push('/editor/new')
+		handleNew() {
+			this.$Modal.confirm({
+				title: '提示',
+				content: '确认新建吗？',
+				loading: true,
+				onOk: async () => {
+					await create()
+					this.$Modal.remove()
+					this.init()
+				},
+			})
 		},
-
 		reload(): void {
 			;(this.$refs.page as any).reload()
 		},
-
-		search(): void {
-			this.init({
-				pageSize: 10,
-				pageNum: 1,
-			})
-		},
-
-		async init({ pageSize, pageNum }) {
+		async init() {
 			const data = {
-				pageSize,
-				pageNum,
-				screenType: 'CUSTOM',
 				...this.query,
 			}
 			const result = {}
@@ -79,7 +66,7 @@ export default {
 					result[key] = data[key]
 				}
 			}
-			const res = await list(result)
+			const res = await all(result)
 			this.loaded = true
 			this.list = res.list
 			this.total = res.count

@@ -7,9 +7,7 @@ e-layout.market-container(:padding="false")
 				@click="select(index)",
 				:key="item.title",
 				:class="{ active: index === selectIndex }") {{ item.title }}
-		component(
-			:is="currentComponent",
-			:style="{ flex: 1, paddingTop: '20px', paddingLeft: '20px' }")
+		component(:is="currentComponent", :style="{ flex: 1, paddingTop: '20px', paddingLeft: '20px' }")
 </template>
 <script lang="ts">
 export default {
@@ -27,16 +25,8 @@ export default {
 					component: () => import('./checkMyComponent.vue'),
 				},
 				{
-					title: '审核历史',
-					component: () => import('./checkHistory.vue'),
-				},
-				{
 					title: '组件分类',
 					component: () => import('./myComponentType.vue'),
-				},
-				{
-					title: '回收站',
-					component: () => import('./recycleComponent.vue'),
 				},
 			],
 		}

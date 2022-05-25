@@ -1,5 +1,6 @@
 <template lang="pug">
 .e-header.pos-f.fn-flex.flex-row
+	img(src="/logo512x512.png", width="40")
 	h1 cakev
 	ul.fn-flex.flex-row.e-header-nav
 		li.pointer.pos-r(
@@ -7,16 +8,13 @@
 			@click="handleLink(item.url, item.title)",
 			v-for="item in list",
 			:key="item.title") {{ item.title }}
-	i-button(type="primary", v-if="!common.user", @click="handleLogin") 登录
+	c-button(type="primary", v-if="!common.user", @click="handleLogin") 登录
 	img.circle.e-header-user-avatar(:src="userAvatar", v-if="common.user")
 	i-drop-down.e-header-user(@on-click="handleUser", v-if="common.user")
 		.pointer
 			span.e-header-user-name {{ name }}
 			i-icon(type="ios-arrow-down", color="#fff")
 		i-drop-down-menu(slot="list")
-			i-drop-down-item(name="child", v-if="!common.user.userIsChild")
-				i-icon(type="md-people", :size="16", color="#333")
-				span.e-header-user-item 子账号管理
 			i-drop-down-item(name="secretKey")
 				i-icon(type="md-lock", :size="16", color="#333")
 				span.e-header-user-item 密钥管理
@@ -29,7 +27,7 @@
 </template>
 <script lang="ts">
 import { Icon, Button, Dropdown, DropdownItem, DropdownMenu } from 'view-design'
-import { logout, detail } from '@/api/user.api.js'
+import { logout, detail } from '@/api/user.api'
 import { mapState } from 'vuex'
 
 export default {
@@ -48,7 +46,7 @@ export default {
 			index: '',
 			list: [
 				{
-					url: '/editor/Manger',
+					url: '/screen',
 					title: '大屏管理',
 				},
 				{
@@ -83,9 +81,6 @@ export default {
 					localStorage.removeItem('cakev-login')
 					logout()
 					this.$router.push('/login')
-					break
-				case 'child':
-					this.$router.push('/userChild')
 					break
 				case 'secretKey':
 					this.$router.push('/secretKey')

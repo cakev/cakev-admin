@@ -1,9 +1,8 @@
 export default {
-	path: '/',
-	name: 'home',
+	path: '/screen/detail/:screenId',
+	name: 'ScreenDetail',
 	meta: {
 		requireAuth: false,
 	},
-	redirect: '/editor/Manger',
 	component: () => import('./index.vue'),
 }

@@ -1,8 +1,8 @@
 import request from './request'
 
-export function list(data) {
+export function all(data) {
 	return request({
-		url: '/screen/list',
+		url: '/screen/all',
 		method: 'post',
 		data,
 	})
@@ -16,7 +16,7 @@ export function destroy(data) {
 	})
 }
 
-export function create(data) {
+export function create(data?) {
 	return request({
 		url: '/screen/create',
 		method: 'post',

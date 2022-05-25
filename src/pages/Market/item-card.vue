@@ -1,8 +1,6 @@
 <template lang="pug">
 e-card(:style="{ borderRadius: '3px 3px 0 0' }")
-	empty-image.avatar(
-		:image="currentItem.componentAvatar",
-		background-size="contain")
+	empty-image.avatar(:image="currentItem.componentAvatar", background-size="contain")
 		.pos-a(:style="{ top: '-2px' }")
 	template(slot="content")
 		.fn-flex
@@ -15,25 +13,11 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 			span(:style="{ marginLeft: 'auto' }") V{{ currentItem.componentVersion }}
 	.pos-a.list-item-card-mask.fn-flex.flex-row
 		i-tooltip(content="编辑组件", placement="top")
-			i-icon.pointer(
-				type="md-create",
-				color="#fff",
-				@click="handleEdit",
-				@click.stop)
+			i-icon.pointer(type="md-create", color="#fff", @click="handleEdit", @click.stop)
 		i-tooltip(content="切换版本", placement="top")
-			i-icon.pointer(
-				type="md-shirt",
-				color="#fff",
-				@click="handleVersion",
-				:style="{ marginLeft: '10px' }",
-				@click.stop)
+			i-icon.pointer(type="md-shirt", color="#fff", @click="handleVersion", :style="{ marginLeft: '10px' }", @click.stop)
 		i-tooltip(content="删除组件", placement="top")
-			i-icon.pointer(
-				type="md-trash",
-				color="#fff",
-				@click="handleRemove",
-				:style="{ marginLeft: '10px' }",
-				@click.stop)
+			i-icon.pointer(type="md-trash", color="#fff", @click="handleRemove", :style="{ marginLeft: '10px' }", @click.stop)
 	i-modal.market-edit-modal(v-model="dialogEditShow", title="编辑")
 		i-form(:label-width="100")
 			i-form-item(label="组件名")
@@ -51,12 +35,12 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 			i-form-item(label="排序")
 				i-input(v-model="currentItem.sort", number)
 			i-form-item(label="类型")
-				tree-select(
-					v-model="currentItem.componentTypeId",
-					:options="componentTypeList",
-					:normalizer="normalizer",
-					:load-options="loadOptions")
-					label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
+				//tree-select(
+				//	v-model="currentItem.componentTypeId",
+				//	:options="componentTypeList",
+				//	:normalizer="normalizer",
+				//	:load-options="loadOptions")
+				//	label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
 			i-form-item(label="缩略图")
 				.img-wrap
 					c-upload-img(v-model="currentItem.componentAvatar")
@@ -64,21 +48,15 @@ e-card(:style="{ borderRadius: '3px 3px 0 0' }")
 			i-button(type="primary", @click="submitEdit") 确定
 	i-modal(v-model="dialogEditVersionShow", title="切换版本")
 		i-select(v-model="currentItem.componentVersion")
-			i-option(
-				:value="k.componentVersion",
-				v-for="(k, i) in versionList",
-				:key="i") {{ k.componentVersion }}
+			i-option(:value="k.componentVersion", v-for="(k, i) in versionList", :key="i") {{ k.componentVersion }}
 		div(slot="footer")
 			i-button(type="primary", @click="submitVersion") 确定
 </template>
 <script lang="ts">
 import { Card, Button, Modal, Form, FormItem, Input, Select, Option, Switch, Tag, Icon, Tooltip } from 'view-design'
 import EmptyImage from '../../components/empty-image/index.vue'
-import TreeSelect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
-import { levelList } from '@/api/marketComponentType.api.js'
-import { update, getVersionList, destroy } from '@/api/marketComponent.api.js'
+import { levelList } from '@/api/marketComponentType.api'
+import { update, getVersionList, destroy } from '@/api/marketComponent.api'
 
 export default {
 	components: {
@@ -95,7 +73,6 @@ export default {
 		'i-option': Option,
 		'i-switch': Switch,
 		EmptyImage,
-		TreeSelect,
 	},
 	props: {
 		item: {
@@ -121,16 +98,16 @@ export default {
 		},
 	},
 	methods: {
-		loadOptions({ action, parentNode, callback }): void {
-			if (action === LOAD_CHILDREN_OPTIONS) {
-				levelList({
-					componentTypeParentId: parentNode.componentTypeId,
-				}).then(r => {
-					parentNode.children = r
-					callback()
-				})
-			}
-		},
+		// loadOptions({ action, parentNode, callback }): void {
+		// 	if (action === LOAD_CHILDREN_OPTIONS) {
+		// 		levelList({
+		// 			componentTypeParentId: parentNode.componentTypeId,
+		// 		}).then(r => {
+		// 			parentNode.children = r
+		// 			callback()
+		// 		})
+		// 	}
+		// },
 
 		normalizer(node) {
 			return {

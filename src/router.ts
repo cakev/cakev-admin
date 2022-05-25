@@ -12,7 +12,13 @@ Vue.use(VueRouter)
 
 const router: any = new VueRouter({
 	mode: 'history',
-	routes,
+	routes: [
+		{
+			path: '/',
+			redirect: '/screen',
+		},
+		...routes,
+	],
 })
 router.beforeEach((to, _from, next) => {
 	if (to.meta.requireAuth) {

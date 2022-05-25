@@ -1,23 +1,9 @@
 <template lang="pug">
 e-card
-	empty-image.list-item-card-avatar.pos-r.pointer(
-		:image="screenAvatar",
-		@click="handleEdit")
+	empty-image.list-item-card-avatar.pos-r.pointer(:image="screenAvatar", @click="handleEdit")
 		.list-item-card-mask.fn-flex.flex-row.pos-a
-			i-tooltip(content="分享", :style="{ marginRight: '10px' }")
-				i-icon.pointer(
-					type="md-paper-plane",
-					color="#fff",
-					:size="16",
-					@click="handleShare",
-					@click.stop)
 			i-tooltip(content="删除")
-				i-icon.pointer(
-					type="md-trash",
-					color="#fff",
-					:size="16",
-					@click="handleRemove",
-					@click.stop)
+				i-icon.pointer(type="md-trash", color="#fff", :size="16", @click="handleRemove", @click.stop)
 	template(slot="content")
 		h2.list-item-card-title.ellipsis {{ screenName }}
 		.list-item-card-btn.fn-flex.flex-row
@@ -25,20 +11,17 @@ e-card
 			.list-item-card-btn-link.pointer(@click="handleLink")
 				i-icon(type="md-laptop", :style="{ marginLeft: 'auto' }")
 				span 预览
-	dShareDialog(v-model="shareModal", :sid="screenId" :screenMainScene="screenMainScene" :screenLayoutMode="screenLayoutMode")
 </template>
 <script lang="ts">
 import { Button, Icon, Modal, Input, Tooltip } from 'view-design'
 import EmptyImage from '../../components/empty-image/index.vue'
-import { dShareDialog } from '@cakev/sdk'
-import { destroy } from '@/api/screen.api.js'
+import { destroy } from '@/api/screen.api'
 
 export default {
 	name: 'item-card',
 	components: {
 		'i-button': Button,
 		'i-icon': Icon,
-		dShareDialog,
 		EmptyImage,
 		'i-modal': Modal,
 		'i-input': Input,
@@ -61,19 +44,11 @@ export default {
 			type: String,
 		},
 		screenMainScene: {
-			type: String,
-		},
-		screenLayoutMode: {
-			type: String,
+			type: [String, Number],
 		},
 		screenConfig: {
 			type: Object,
 		},
-	},
-	data() {
-		return {
-			shareModal: false,
-		}
 	},
 	computed: {
 		statusStr() {
@@ -81,16 +56,11 @@ export default {
 		},
 	},
 	methods: {
-		handleShare(): void {
-			this.shareModal = true
-		},
 		handleEdit(): void {
-			this.$router.push(`/editor/manger/${this.screenId}`)
+			this.$router.push(`/screen/editor/${this.screenId}`)
 		},
 		handleLink(): void {
-			const scene = this.screenMainScene ? `&scene=${this.screenMainScene}` : ''
-			const layoutMode = this.screenLayoutMode ? `?layoutMode=${this.screenLayoutMode}` : ''
-			window.open(`${location.origin}/detail/${this.screenId}${layoutMode}${scene}`)
+			window.open(`${location.origin}/screen/detail/${this.screenId}`)
 		},
 		handleRemove(): void {
 			this.$Modal.confirm({
@@ -111,10 +81,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../scss/conf';
-.d-detail-share-button {
-	line-height: 32px;
-	border-radius: 0;
-}
 .list-item-card-btn-link {
 	margin-left: auto;
 	color: #666;

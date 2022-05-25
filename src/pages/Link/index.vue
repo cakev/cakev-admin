@@ -2,20 +2,20 @@
 e-layout(:padding="false")
 	.create
 		.search
-			i-input(v-model="linkName" style="margin-right: 10px;" placeholder="外链名")
+			i-input(v-model="linkName", style="margin-right: 10px", placeholder="外链名")
 			i-button(type="primary", @click="init") 查询
 		i-button(type="primary", @click="create") 创建外链
 	i-table(:columns="columns", :data="tableData")
 		template(#action="{row}")
-			i-button(type="warning", @click="handleRemove(row)" style="margin-right: 10px;") 删除
+			i-button(type="warning", @click="handleRemove(row)", style="margin-right: 10px") 删除
 			i-button(type="info", @click="handleEdit(row)") 编辑
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
-	dialogLink(v-model="dialogShow" :detail="current" @init="search")
+	dialogLink(v-model="dialogShow", :detail="current", @init="search")
 </template>
 <script lang="ts">
 import { Table, Button, Input } from 'view-design'
 import dialogLink from './dialogLink.vue'
-import { getLinkList, destroyLink } from '@/api/link.api.js'
+import { getLinkList, destroyLink } from '@/api/link.api'
 
 export default {
 	name: 'link',
@@ -58,6 +58,14 @@ export default {
 		}
 	},
 	methods: {
+		create() {
+			this.current = {
+				linkName: '',
+				linkUrl: '',
+				linkScreenId: '',
+			}
+			this.dialogShow = true
+		},
 		search() {
 			this.init({
 				pageSize: 10,
@@ -95,14 +103,6 @@ export default {
 				},
 			})
 		},
-	},
-	create() {
-		this.current = {
-			linkName: '',
-			linkUrl: '',
-			linkScreenId: '',
-		}
-		this.dialogShow = true
 	},
 }
 </script>

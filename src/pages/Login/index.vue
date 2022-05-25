@@ -9,18 +9,13 @@
 			FormItem
 				i-input(prefix="md-contact", placeholder="用户名", v-model="userName")
 			FormItem
-				i-input(
-					prefix="md-lock",
-					placeholder="密码",
-					v-model="password",
-					@keyup.enter="login",
-					type="password")
+				i-input(prefix="md-lock", placeholder="密码", v-model="password", @keyup.enter="login", type="password")
 			FormItem
 				i-button(type="primary", shape="circle", :long="true", @click="login") 登录
 </template>
 <script lang="ts">
 import { Input, Button, Icon, Form, FormItem } from 'view-design'
-import { login } from '@/api/user.api.js'
+import { login } from '@/api/user.api'
 
 export default {
 	name: 'login',
@@ -39,6 +34,7 @@ export default {
 	},
 	methods: {
 		async login() {
+			const redirect_url = this.$route.query['redirect_url'] as string
 			if (!this.userName || !this.password) return
 			const res = await login({
 				userName: this.userName,
@@ -46,7 +42,13 @@ export default {
 			})
 			this.$store.commit('common/setUser', res)
 			localStorage.setItem('cakev-login', 'true')
-			this.$router.replace('/')
+			if (redirect_url) {
+				;/^http/.test(redirect_url)
+					? (location.href = decodeURIComponent(redirect_url))
+					: await this.$router.push(decodeURIComponent(redirect_url))
+			} else {
+				await this.$router.push('/')
+			}
 		},
 	},
 }

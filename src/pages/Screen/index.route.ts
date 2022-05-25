@@ -1,6 +1,6 @@
 export default {
-	path: '/userChild',
-	name: 'userChild',
+	path: '/screen',
+	name: 'Screen',
 	meta: {
 		requireAuth: true,
 	},

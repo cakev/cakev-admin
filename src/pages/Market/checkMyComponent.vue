@@ -3,11 +3,7 @@ div
 	.btn-box
 		i-button.mr10(type="primary", @click="check", :disabled="!selectOne") 审核
 		i-button.mr10(type="primary", @click="destroy", :disabled="!selectOne") 删除
-	i-table(
-		:columns="columns",
-		:data="list",
-		v-if="total > 0",
-		@on-selection-change="selectHandle")
+	i-table(:columns="columns", :data="list", v-if="total > 0", @on-selection-change="selectHandle")
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
 	dialogCheck(v-model="dialogCheckShow", :detail="currentRow", @reload="reload")
 </template>
@@ -15,7 +11,7 @@ div
 import { Table, Button } from 'view-design'
 import dialogCheck from './dialogCheckComponent.vue'
 import { Editor } from '@cakev/sdk'
-import { destroy, checkList } from '@/api/marketComponent.api.js'
+import { destroy, checkList } from '@/api/marketComponent.api'
 
 export default {
 	components: {

@@ -1,27 +1,15 @@
 <template lang="pug">
 div
 	.search.fn-flex.flex-row
-		i-input(
-			v-model="query.componentTitle",
-			placeholder="组件标题",
-			style="width: 200px",
-			size="small",
-			clearable)
+		i-input(v-model="query.componentTitle", placeholder="组件标题", style="width: 200px", size="small", clearable)
 		i-select(
 			:style="{ width: '100px', marginLeft: '10px' }",
 			v-model="query.componentTypeId",
 			placeholder="组件分类",
 			size="small",
 			clearable)
-			i-option(
-				v-for="item in typeList",
-				:value="item.componentTypeId",
-				:key="item.componentTypeId") {{ item.componentTypeName }}
-		i-button(
-			icon="ios-search",
-			size="small",
-			style="margin-left: 15px",
-			@click="search")
+			i-option(v-for="item in typeList", :value="item.componentTypeId", :key="item.componentTypeId") {{ item.componentTypeName }}
+		i-button(icon="ios-search", size="small", style="margin-left: 15px", @click="search")
 	i-table(
 		:border="true",
 		size="small",
@@ -40,10 +28,7 @@ div
 	e-page(@init="init", :total="total", ref="page", :loaded="loaded")
 	i-modal(v-model="dialogEditVersionShow", title="切换版本")
 		i-select(v-model="currentItem.componentVersion")
-			i-option(
-				:value="k.componentVersion",
-				v-for="(k, i) in versionList",
-				:key="i") {{ k.componentVersion }}
+			i-option(:value="k.componentVersion", v-for="(k, i) in versionList", :key="i") {{ k.componentVersion }}
 		div(slot="footer")
 			i-button(type="primary", @click="submitVersion") 确定
 	i-modal.market-edit-modal(v-model="dialogEditShow", title="编辑")
@@ -62,13 +47,13 @@ div
 					i-option(value="MAP") 地图
 			i-form-item(label="排序")
 				i-input(v-model="currentItem.sort", number)
-			i-form-item(label="类型")
-				tree-select(
-					v-model="currentItem.componentTypeId",
-					:options="typeList",
-					:normalizer="normalizer",
-					:load-options="loadOptions")
-					label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
+			//i-form-item(label="类型")
+			//	tree-select(
+			//		v-model="currentItem.componentTypeId",
+			//		:options="typeList",
+			//		:normalizer="normalizer",
+			//		:load-options="loadOptions")
+			//		label(slot="value-label", slot-scope="{ node }") {{ node.raw.componentTypeName || currentItem.componentTypeName }}
 			i-form-item(label="缩略图")
 				.img-wrap
 					c-upload-img(v-model="currentItem.componentAvatar")
@@ -77,15 +62,8 @@ div
 </template>
 <script lang="ts">
 import { Table, Button, Input, Option, Select, Modal, FormItem, Form } from 'view-design'
-import { destroy, getVersionList, list, update } from '@/api/marketComponent.api.js'
+import { destroy, getVersionList, list, update } from '@/api/marketComponent.api'
 import { levelList } from '@/api/marketComponentType.api'
-import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
-import TreeSelect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import Vue from 'vue'
-import Viewer from 'v-viewer'
-import 'viewerjs/dist/viewer.css'
-Vue.use(Viewer)
 
 export default {
 	components: {
@@ -97,7 +75,6 @@ export default {
 		'i-input': Input,
 		'i-select': Select,
 		'i-option': Option,
-		TreeSelect,
 	},
 	data() {
 		return {
@@ -147,16 +124,16 @@ export default {
 		}
 	},
 	methods: {
-		loadOptions({ action, parentNode, callback }): void {
-			if (action === LOAD_CHILDREN_OPTIONS) {
-				levelList({
-					componentTypeParentId: parentNode.componentTypeId,
-				}).then(r => {
-					parentNode.children = r
-					callback()
-				})
-			}
-		},
+		// loadOptions({ action, parentNode, callback }): void {
+		// 	if (action === LOAD_CHILDREN_OPTIONS) {
+		// 		levelList({
+		// 			componentTypeParentId: parentNode.componentTypeId,
+		// 		}).then(r => {
+		// 			parentNode.children = r
+		// 			callback()
+		// 		})
+		// 	}
+		// },
 
 		normalizer(node) {
 			return {

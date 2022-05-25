@@ -8,11 +8,10 @@ i-modal.check-modal(v-model="modalShow", title="审核")
 
 <script lang="ts">
 import { Modal, Button } from 'view-design'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import html2canvas from 'html2canvas'
 import { dView } from '@cakev/sdk'
-import { checkError, checkSuccess } from '@/api/marketComponent.api.js'
-import { file } from '@/api/upload.api.js'
+import { checkError, checkSuccess } from '@/api/marketComponent.api'
+import { file } from '@/api/upload.api'
 import { Editor } from '@cakev/sdk'
 
 export default {

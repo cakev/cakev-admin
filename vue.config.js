@@ -1,7 +1,7 @@
 const pkg = require('./package.json')
 const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
-const proxyUrl = 'http://127.0.0.1:7001'
+const proxyUrl = 'http://127.0.0.1:1111'
 
 const resolve = dir => {
 	return path.join(__dirname, dir)
@@ -18,17 +18,12 @@ module.exports = {
 		historyApiFallback: true,
 		disableHostCheck: true,
 		proxy: {
-			'^/node': {
+			'^/api': {
 				target: proxyUrl,
 				changeOrigin: true,
-			},
-			'^/cdn': {
-				target: proxyUrl,
-				changeOrigin: true,
-			},
-			'^/server': {
-				target: proxyUrl,
-				changeOrigin: true,
+				pathRewrite: {
+					'^/api': '/',
+				},
 			},
 		},
 	},

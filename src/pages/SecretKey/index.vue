@@ -12,16 +12,16 @@ e-layout(:padding="false")
 					label appSecret:
 					.content {{ row.isSecretKeyShow ? row.appSecret : row.appSecret.replace(/./g, '*') }}
 						.show.pointer(@click="row.isSecretKeyShow = !row.isSecretKeyShow") {{ row.isSecretKeyShow ? '隐藏' : '显示' }}
-		template(#isUsed="{row}")
-			span.use(v-if="row.isUsed") 使用中
+		template(#enabled="{row}")
+			span.use(v-if="row.enabled") 使用中
 			span.stop(v-else) 已停用
 		template(#action="{row}")
-			i-button(type="warning", @click="handleUse(row)", v-if="row.isUsed") 停用
+			i-button(type="warning", @click="handleUse(row)", v-if="row.enabled") 停用
 			i-button(type="info", @click="handleUse(row)", v-else) 启用
 </template>
 <script lang="ts">
 import { Table, Button } from 'view-design'
-import { createSecretKey, getAllSecretKey, stopSecretKey, useSecretKey } from '@/api/secretKey.api.js'
+import { createSecretKey, getAllSecretKey, stopSecretKey, useSecretKey } from '@/api/secretKey.api'
 
 export default {
 	components: {
@@ -35,7 +35,7 @@ export default {
 				{
 					width: 200,
 					title: '创建时间',
-					slot: 'createTime',
+					key: 'createTime',
 				},
 				{
 					minWidth: 300,
@@ -44,7 +44,7 @@ export default {
 				},
 				{
 					title: '状态',
-					slot: 'isUsed',
+					slot: 'enabled',
 				},
 				{
 					title: '操作',
@@ -54,6 +54,10 @@ export default {
 		}
 	},
 	methods: {
+		async create() {
+			await createSecretKey()
+			await this.getList()
+		},
 		async getList() {
 			let res = await getAllSecretKey()
 			res = res.map(v => {
@@ -63,7 +67,7 @@ export default {
 			this.tableData = res
 		},
 		async handleUse(row) {
-			if (row.isUsed) {
+			if (row.enabled) {
 				await stopSecretKey({
 					appKey: row.appKey,
 					appSecret: row.appSecret,
@@ -77,10 +81,6 @@ export default {
 			this.$Message.success('操作成功')
 			this.getList()
 		},
-	},
-	async create() {
-		await createSecretKey()
-		await this.getList()
 	},
 	async mounted() {
 		await this.getList()

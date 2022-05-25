@@ -1,34 +1,26 @@
 import request from './request'
 
 // 登陆
-export function login(data) {
+export const login = data => {
 	return request({
-		url: '/user/login',
+		url: '/user/login-by-cookie',
 		method: 'post',
 		data,
 	})
 }
 
 // 登出
-export function logout() {
+export const logout = () => {
 	return request({
-		url: '/user/logout',
+		url: '/user/logout-by-cookie',
 		method: 'post',
 	})
 }
 
 // 个人信息详情
-export function detail() {
+export const detail = () => {
 	return request({
-		url: '/user/detail',
-		method: 'post',
-	})
-}
-
-// 获取子账号列表
-export function childList() {
-	return request({
-		url: '/user/child/all',
+		url: '/user/detail-by-cookie',
 		method: 'post',
 	})
 }

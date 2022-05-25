@@ -2,32 +2,19 @@
 e-layout.market-container(:padding="false")
 	.btn-box
 		i-button.mr10(type="primary", @click="create") 新增
-	i-table(
-		row-key="componentTypeId",
-		:columns="columns",
-		:data="list",
-		v-if="total > 0",
-		:load-data="handleLoadData")
+	i-table(row-key="componentTypeId", :columns="columns", :data="list", v-if="total > 0", :load-data="handleLoadData")
 		template(#componentTypeParentName="{ row }")
 			span {{ row.componentTypeParentName ? row.componentTypeParentName : '无' }}
 		template(#action="{ row }")
 			i-button.mr10(type="primary", @click="edit(row)") 编辑
 			i-button(type="error", @click="remove(row)") 删除
-	e-page(
-		@init="init",
-		:total="total",
-		ref="page",
-		:show="false",
-		:loaded="loaded")
-	dialogComponentType(
-		v-model="dialogEditShow",
-		:detail="currentRow",
-		@reload="init")
+	e-page(@init="init", :total="total", ref="page", :show="false", :loaded="loaded")
+	dialogComponentType(v-model="dialogEditShow", :detail="currentRow", @reload="init")
 </template>
 <script lang="ts">
 import { Table, Button } from 'view-design'
 import dialogComponentType from './dialogComponentType.vue'
-import { levelList, destroy } from '@/api/marketComponentType.api.js'
+import { levelList, destroy } from '@/api/marketComponentType.api'
 import { mapState } from 'vuex'
 
 export default {
