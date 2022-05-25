@@ -7,9 +7,9 @@
 			h2.pos-r CakeV
 		Form.login-card-content(@keydown.native.enter.prevent="login")
 			FormItem
-				i-input(prefix="md-contact", placeholder="用户名", v-model="userName")
+				i-input(prefix="md-contact", placeholder="用户名：test", v-model="userName")
 			FormItem
-				i-input(prefix="md-lock", placeholder="密码", v-model="password", @keyup.enter="login", type="password")
+				i-input(prefix="md-lock", placeholder="密码：test", v-model="password", @keyup.enter="login", type="password")
 			FormItem
 				i-button(type="primary", shape="circle", :long="true", @click="login") 登录
 </template>
