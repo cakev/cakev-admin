@@ -8,8 +8,8 @@
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {
-		"@cakev/sdk": "0.0.1-beta.4",
-		"@cakev/ui": "0.0.1-beta.12",
+		"@cakev/sdk": "0.0.1-beta.5",
+		"@cakev/ui": "0.0.1-beta.15",
 		"@cakev/util": "0.0.1-beta.11",
 		"@jiaminghi/data-view": "^2.10.0",
 		"@simonwep/pickr": "^1.7.4",
